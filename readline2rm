@@ -1,0 +1,8 @@
+#!bash
+
+inFile=$1
+
+while read -r line;
+    do
+        rm -r "$line"
+done < $1
