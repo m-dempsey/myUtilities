@@ -1,8 +1,52 @@
-#!bash
+#!/usr/bin/bash
 
-inFile=$1
+# Script Name: readline2mkdir
+# Decrtiption: for every line in an input file, make a file
 
-while read -r line;
-    do
-        echo > "$line"
-done < $1
+scriptName=$(basename "$0")
+
+function helper() {
+    echo "description:"
+    echo "  for every line in an input file, make a file"
+    echo "usage:"
+    echo "  $scriptName inFile"
+    echo "  $scriptName [options]"
+    echo "options:"
+    echo "  -h, --help      Display this help message"
+    echo "  -v, --version   Display script version"
+}
+
+function main() {
+    while read -r line;
+        do
+            mkdir "$line"
+    done < $1
+}
+
+
+case "$1" in
+    -h | --help)
+        helper
+        exit 0
+        ;;
+    -v | --version)
+        echo "$scriptName version 1"
+        exit 0
+        ;;
+    *)
+        if [[ $1 =~ ^- ]]; then
+            echo "$1 is an invalid flag"
+            echo ""
+            helper
+            exit 1
+        elif [[ -f $1 ]]; then
+            main $1
+            exit 0
+        else
+            echo "Invalid input"
+            echo ""
+            helper
+            exit 1
+        fi
+        ;;
+esac
