@@ -1,0 +1,54 @@
+#!/usr/bin/bash
+
+
+# Script Name: unzipTrajectory
+# Decrtiption: unzip a trajectory file to a folder called "trajectory[yyyyMMdd]"
+
+scriptName=$(basename "$0")
+
+function helper() {
+    echo "description:"
+    echo "  unzip a trajectory file to a folder called \"trajectory[yyyyMMdd]\""
+    echo "usage:"
+    echo "  $scriptName inFile"
+    echo "  $scriptName [options]"
+    echo "options:"
+    echo "  -h, --help      Display this help message"
+    echo "  -v, --version   Display script version"
+}
+
+function main() {
+    inFile=$1
+	today=$(date '+%Y%m%d')
+	outFolder="trajectory$today"
+
+	unzip "$inFile" -d "$outFolder"
+}
+
+
+case "$1" in
+    -h | --help)
+        helper
+        exit 0
+        ;;
+    -v | --version)
+        echo "$scriptName version 1"
+        exit 0
+        ;;
+    *)
+        if [[ $1 =~ ^- ]]; then
+            echo "$1 is an invalid flag"
+            echo ""
+            helper
+            exit 1
+        elif [[ -f $1 ]]; then
+            main $1
+            exit 0
+        else
+            echo "Invalid input"
+            echo ""
+            helper
+            exit 1
+        fi
+        ;;
+esac
