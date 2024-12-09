@@ -22,7 +22,7 @@ function main() {
 	today=$(date '+%Y%m%d')
 	outFolder="trajectory$today"
 
-	unzip $inFile -d $outFolder
+	unzip "$inFile" -d "$outFolder"
 }
 
 
@@ -36,13 +36,13 @@ case "$1" in
         exit 0
         ;;
     *)
-        if [[ $1 =~ ^- ]]; then
+        if [[ "$1" =~ ^- ]]; then
             echo "$1 is an invalid flag"
             echo ""
             helper
             exit 1
-        elif [[ -f $1 ]]; then
-            main $1
+        elif [[ -f "$1" ]]; then
+            main "$1"
             exit 0
         else
             echo "Invalid input"
