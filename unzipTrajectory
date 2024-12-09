@@ -1,0 +1,7 @@
+#!/usr/bin/bash
+
+inFile=$1
+today=$(date '+%Y%m%d')
+outFolder="trajectory$today"
+
+unzip "$inFile" -d "$outFolder"
