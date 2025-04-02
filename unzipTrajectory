@@ -5,50 +5,105 @@
 # Decrtiption: unzip a trajectory file to a folder called "trajectory[yyyyMMdd]"
 
 scriptName=$(basename "$0")
+outFolder=""
+appendToName=""
 
 function helper() {
+    version
     echo "description:"
     echo "  unzip a trajectory file to a folder called \"trajectory[yyyyMMdd]\""
     echo "usage:"
     echo "  $scriptName inFile"
-    echo "  $scriptName [options]"
+    echo "  $scriptName [options] inFile"
     echo "options:"
-    echo "  -h, --help      Display this help message"
-    echo "  -v, --version   Display script version"
+    echo "  -a, --appendName        Append argument to default output folder name"
+    echo "  -h, --help              Display this help message"
+    echo "  -o, --outputFolder      Output folder name, overwrites -a option"
+    echo "  -v, --version           Display script version"
 }
 
-function main() {
+function version() {
+    echo "$scriptName version 2"
+}
+
+function setOptions() {
+    echo "Option $1 using argument: $2"
+}
+
+function mainUnzip() {
     inFile="$1"
-	today=$(date '+%Y%m%d')
-	outFolder="trajectory$today"
+
+    if [[ -n "$outFolder" ]]; then # if outFolder is not empty ("" is empty)
+        if [[ -n "$appendToName" ]]; then
+            echo "Option -a will be ignored because Option -o was passed"
+        fi
+    else
+        today=$(date '+%Y%m%d')
+        outFolder="trajectory${today}"
+
+        if [[ -n "$appendToName" ]]; then # if appendToName is not empty
+            outFolder="${outFolder}_${appendToName}"
+        fi
+    fi
 
 	unzip "$inFile" -d "$outFolder"
 }
 
 
-case "$1" in
-    -h | --help)
-        helper
-        exit 0
-        ;;
-    -v | --version)
-        echo "$scriptName version 1"
-        exit 0
-        ;;
-    *)
-        if [[ "$1" =~ ^- ]]; then
-            echo "$1 is an invalid flag"
-            echo ""
+while [[ $# -gt -1 ]]; do
+    if [[ $# -eq 0 ]]; then
+        echo "Additional inputs expected"
+        exit 1
+    fi
+    key="$1"
+    case "$key" in
+        -h | --help)
             helper
-            exit 1
-        elif [[ -f "$1" ]]; then
-            main "$1"
             exit 0
-        else
-            echo "Invalid input"
-            echo ""
-            helper
-            exit 1
-        fi
-        ;;
-esac
+            ;;
+        -v | --version)
+            version
+            exit 0
+            ;;
+        -a | --appendName)
+            # check if option arguments exist and not another option flag
+            if [[ -z "$2" || "$2" =~ ^- || "$2" =~ ^-- ]]; then
+                echo "One argument expected for option $key"
+                shift
+                continue
+            fi
+            setOptions "$key" "$2"
+            appendToName="$2"
+            shift
+            shift
+            ;;
+        -o | --outputFolder)
+            # check if option arguments exist and not another option flag
+            if [[ -z "$2" || "$2" =~ ^- || "$2" =~ ^-- ]]; then
+                echo "One argument expected for option $key"
+                shift
+                continue
+            fi
+            setOptions "$key" "$2"
+            outFolder="$2"
+            shift
+            shift
+            ;;
+        *)
+            if [[ -f "$key" ]]; then
+                mainUnzip "$key"
+                exit 0
+            elif [[ "$key" =~ ^- || "$key" =~ ^-- ]]; then
+                echo "$key is an invalid flag"
+                echo ""
+                helper
+                exit 1
+            else
+                echo "Invalid input"
+                echo ""
+                helper
+                exit 1
+            fi
+            ;;
+    esac
+done
