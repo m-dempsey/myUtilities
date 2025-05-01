@@ -1,0 +1,93 @@
+#!/usr/bin/bash
+
+
+# Script Name: changeextension
+# Decrtiption: change the extension of all files in a directory
+
+scriptName=$(basename "$0")
+
+function helper() {
+    version
+    echo "description:"
+    echo "  change the extension of all files in a directory"
+    echo "usage:"
+    echo "  $scriptName oldExt newExt"
+    echo "  $scriptName [options] oldExt newExt"
+    echo "example:"
+    echo "  $scriptName txt csv"
+    echo "  This will change all *.txt files in the current directory to *.csv files."
+    echo "options:"
+    echo "  -h, --help              Display this help message"
+    echo "  -v, --version           Display script version"
+    echo "  -V, --verbose           Display verbose output"
+}
+
+function version() {
+    echo "$scriptName version 1"
+}
+
+
+function mainChangeExtension() {
+    oldExt="$1"
+    newExt="$2"
+
+    for file in *."$oldExt"; do
+        tempBasename=$(basename "$file" ".$oldExt")
+        newFile="${tempBasename}.${newExt}"
+        if [[ $verboseFlag -eq 1 ]]; then
+            echo "Renaming $file to $newFile"
+        fi
+        # mv "$file" "$newFile"
+    done
+
+    echo "Done changing extensions from $oldExt to $newExt."
+}
+
+function checkArguments() {
+    # check if the script has 2 non-empty arguments
+    if [[ $# -ne 2 ]]; then
+        echo "Not enough arguments, expected 2 arguments"
+        exit 1
+    fi
+
+    # check if the arguments are the same
+    if [[ "$1" == "$2" ]]; then
+        echo "The arguments are the same, expected different arguments"
+        exit 1
+    fi
+
+    # check if the arguments do not contain a dot
+    if [[ "$1" == *.* || "$2" == *.* ]]; then
+        echo "Error: arguments should not contain a dot"
+        echo "Example: .txt should be txt"
+        exit 1
+    fi
+}
+
+# process options
+while [[ $# -gt -1 ]]; do
+    if [[ $# -eq 0 ]]; then
+        echo "Additional inputs expected"
+        exit 1
+    fi
+    key="$1"
+    case "$key" in
+        -h | --help)
+            helper
+            exit 0
+            ;;
+        -v | --version)
+            version
+            exit 0
+            ;;
+        -V | --verbose)
+            verboseFlag=1
+            shift # past argument
+            ;;
+        *)
+            checkArguments "$@"
+            mainChangeExtension "$@"
+            exit 0
+            ;;
+    esac
+done
