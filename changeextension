@@ -37,7 +37,7 @@ function mainChangeExtension() {
         if [[ $verboseFlag -eq 1 ]]; then
             echo "Renaming $file to $newFile"
         fi
-        # mv "$file" "$newFile"
+        mv "$file" "$newFile"
     done
 
     echo "Done changing extensions from $oldExt to $newExt."
