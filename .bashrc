@@ -1,0 +1,20 @@
+alias ls='ls -A --color'
+alias cp='cp -r'
+alias chext='changeextension'
+alias repos='cd ~/Repositories'
+alias ut='unzipTrajectory'
+alias git-clean-remote='git fetch --prune origin'
+alias git-clean-local='git branch -d $(git branch --merged=main | grep -v main); git fetch --prune'
+alias git-clean-all='git-clean-remote; git-clean-local; echo -e "\nAll Remaining Branches:\n"; git branch -a'
+alias reload='. ~/.bashrc'
+
+function lf {
+		# local find
+		# input search directory then name
+		find "$1" -maxdepth 1 -name "*$2*"
+}
+
+function open-chrome {
+		# input file path
+		start chrome "$(realpath "$1")"
+}
