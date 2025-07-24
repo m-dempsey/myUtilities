@@ -6,6 +6,7 @@ alias ut='unzipTrajectory'
 alias git-clean-remote='git fetch --prune origin'
 alias git-clean-local='git branch -d $(git branch --merged=main | grep -v main); git fetch --prune'
 alias git-clean-all='git-clean-remote; git-clean-local; echo -e "\nAll Remaining Branches:\n"; git branch -a'
+alias git-last-change='git diff HEAD~1..HEAD'
 alias reload='. ~/.bashrc'
 
 function lf {
