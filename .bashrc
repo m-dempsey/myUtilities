@@ -14,7 +14,7 @@ alias reload='. ~/.bashrc'
 function lf {
 		# local find
 		# input search directory then name
-		find "$1" -maxdepth 1 -name "*$2*"
+		find "$1" -maxdepth 1 -iname "*$2*"
 }
 
 function open-chrome {
