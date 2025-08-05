@@ -1,0 +1,86 @@
+#/bin/bash
+
+# Define variables
+out_dir=$(pwd)
+out_file="my-stuff-$(date '+%F').kml"
+place_name="my-name"
+lat="30"
+lon="-70"
+alt="0"
+coords="$lon,$lat,$alt"
+visibility="1"
+color="ffffffff"
+scale="2.00"
+extrude="0"
+tessellate="1"
+altMode="relativeToGround"
+
+# debugging
+#echo $out_dir
+
+function start_file() {
+	echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > "$out_file"
+	echo "<kml xmlns=\"http://earth.google.com/kml/2.1\">" >> "$out_file"
+	echo "<Document>" >> "$out_file"
+}
+
+function end_file() {
+	echo "</Document>" >> "$out_file"
+	echo "</kml>" >> "$out_file"
+}
+
+function start_placemark() {
+	echo "<Placemark>" >> "$out_file"
+	echo "<name>$place_name</name>" >> "$out_file"
+	echo "<visibility>$visibility</visibility>" >> "$out_file"
+}
+
+function end_placemark() {
+	echo "</Placemark>" >> "$out_file"
+}
+
+function make_line() {
+	start_placemark
+	echo "<Style>" >> "$out_file"
+	echo "<LineStyle>" >> "$out_file"
+	echo "<color>$color</color>" >> "$out_file"
+	echo "<width>$scale</width>" >> "$out_file"
+	echo "</LineStyle>" >> "$out_file"
+	echo "</Style>" >> "$out_file"
+	echo "<LineString>" >> "$out_file"
+	echo "<extrude>$extrude</extrude>" >> "$out_file"
+	echo "<tessellate>$tessellate</tessellate>" >> "$out_file"
+	echo "<altitudeMode>$altMode</altitudeMode>" >> "$out_file"
+	echo "<coordinates>$coords $coords</coordinates>" >> "$out_file"
+	echo "</LineString>" >> "$out_file"
+	end_placemark
+}
+
+function make_point() {
+	start_placemark
+	echo "<Style>" >> "$out_file"
+	echo "<IconStyle><scale>$scale</scale></IconStyle>" >> "$out_file"
+	echo "<LabelStyle><scale>$scale</scale></LabelStyle>" >> "$out_file"
+	echo "</Style>" >> "$out_file"
+	echo "<Point>" >> "$out_file"
+	echo "<coordinates>$coords</coordinates>" >> "$out_file"
+	echo "</Point>" >> "$out_file"
+	end_placemark
+}
+
+function main() {
+	old_dir=$(pwd)
+	cd "$out_dir"
+	
+	start_file
+	make_line
+	make_point
+	end_file
+	
+	cd "$old_dir"
+
+	exit 1
+}
+
+main
+
