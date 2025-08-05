@@ -1,5 +1,26 @@
 #/bin/bash
 
+# Script Name: mkKML
+# Description: make a simple KML file
+
+scriptName=$(basename "$0")
+
+function helper() {
+	version
+	echo "description:"
+	echo "  make a simple KML file"
+	echo "usage:"
+	echo "  $scriptName"
+	echo "  $scriptName [options]"
+	echo "options:"
+	echo "  -h, --help              Display this help message"
+	echo "  -v, --version           Display script version"
+}
+
+function version() {
+	echo "$scriptName version 1"
+}
+
 # Define variables
 out_dir=$(pwd)
 out_file="my-stuff-$(date '+%F').kml"
@@ -82,5 +103,39 @@ function main() {
 	exit 1
 }
 
-main
+while [[ $# -gt -1 ]]; do
+    if [[ $# -eq 0 ]]; then
+        echo "Additional inputs expected"
+        exit 1
+    fi
+    key="$1"
+    case "$key" in
+        -h | --help)
+            helper
+            exit 0
+            ;;
+        -v | --version)
+            version
+            exit 0
+            ;;
+		*)
+			if [[ -f "$key" ]]; then
+                #main"
+                exit 0
+            elif [[ "$key" =~ ^- || "$key" =~ ^-- ]]; then
+                echo "$key is an invalid flag"
+                echo ""
+                helper
+                exit 1
+            else
+                echo "Invalid input"
+                echo ""
+                helper
+                exit 1
+            fi
+			;;
+	esac
+done
+
+#main
 
