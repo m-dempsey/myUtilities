@@ -12,6 +12,9 @@ alias git-clean-all='git-clean-remote; git-clean-local; echo -e "\nAll Remaining
 alias git-last-change='git diff HEAD~1..HEAD'
 alias reload='. ~/.bashrc'
 
+# load .inputrc for key bindings
+bind -f ~/Repositories/myUtilities/.inputrc
+
 function lf {
 		# local find
 		# input search directory then name

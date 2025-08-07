@@ -1,0 +1,4 @@
+"\C\e[A": history-search-backward # Ctrl+UpArrow
+"\C\e[B": history-search-forward # Ctrl+DownArrow
+"\C-h": backward-kill-word # Ctrl+Backspace
+"\e[3;5~": kill-word # Ctrl+Del
