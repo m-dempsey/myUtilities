@@ -13,8 +13,11 @@ alias git-last-change='git diff HEAD~1..HEAD'
 alias gs='git status'
 alias reload='. ~/.bashrc'
 
-# load .inputrc for key bindings
-bind -f ~/Repositories/myUtilities/.inputrc
+# load key bindings
+bind '"\C-[[A": history-search-backward' # Ctrl+UpArrow
+bind '"\C-[[B": history-search-forward' # Ctrl+DownArrow
+bind '"\C-h": backward-kill-word' # Ctrl+Backspace
+bind '"\e[3;5~": kill-word' # Ctrl+Del
 
 function lf {
 		# local find
