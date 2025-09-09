@@ -2,7 +2,7 @@
 
 # set defaults
 scriptName=$(basename "$0")
-default_width=50
+default_width=80
 default_lhs=">"
 default_headSymbol="|"
 default_rhs="<"
@@ -65,4 +65,5 @@ if [[ $# -lt 2 ]]; then
 fi
 # execute progress-bar
 progress-bar $current $total $width "$lhs" "$headSymbol" "$rhs"
+echo
 
