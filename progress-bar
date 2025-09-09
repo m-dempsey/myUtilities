@@ -1,0 +1,68 @@
+#!/bin/bash
+
+# set defaults
+scriptName=$(basename "$0")
+default_width=50
+default_lhs=">"
+default_headSymbol="|"
+default_rhs="<"
+
+# read user inputs
+current=$1
+total=$2
+width=${3:-$default_width}
+lhs=${4:-$default_lhs}
+headSymbol=${5:-$default_headSymbol}
+rhs=${6:-$default_rhs}
+
+function helper() {
+	echo "Usage: $scriptName current total width lhs headSymbol rhs"
+	echo "	current - [required] a number representing the current item out of the total"
+	echo "	total - [required] a number representing the total items to go through"
+	echo "	width - [default: $default_width] number of columns progress bar will span"
+	echo "	lhs - [default: \"$default_lhs\"] symbol on left hand side of progress bar"
+	echo "	headSymbol - [default: \"$default_headSymbol\"] symbol at current status"
+	echo "	rhs - [default: \"$default_rhs\"] symbol on right hand side of progress bar"
+}
+
+function progress-bar() {
+	local current=$1
+	local total=$2
+	local width=$3
+	local length=$((width * 3 / 4))
+	local percentDone=$((100 * current / total))
+	local numBars=$((percentDone * length / 100))
+
+	local statusBar="["
+	local lhs=$4
+	local headSymbol=$5
+	local rhs=$6
+
+	local i
+	for ((i = 0; i < numBars; i++)); do
+		statusBar+=$lhs
+	done
+	statusBar+=$headSymbol
+	for ((i = numBars+1; i <= length; i++)); do
+		statusBar+=$rhs
+	done
+	statusBar+="]"
+
+	echo -ne "$statusBar $current/$total ($percentDone%)\r"
+}
+
+# run main script
+# check if help requested
+case $1 in
+	-h | --help)
+		helper
+		exit 0
+esac
+# check minimum number of inputs
+if [[ $# -lt 2 ]]; then
+	echo "ERROR: current and total values expected as input"
+	exit 1
+fi
+# execute progress-bar
+progress-bar $current $total $width "$lhs" "$headSymbol" "$rhs"
+
