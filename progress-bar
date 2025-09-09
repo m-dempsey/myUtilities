@@ -65,5 +65,4 @@ if [[ $# -lt 2 ]]; then
 fi
 # execute progress-bar
 progress-bar $current $total $width "$lhs" "$headSymbol" "$rhs"
-echo
 
