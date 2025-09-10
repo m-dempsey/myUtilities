@@ -47,20 +47,20 @@ function progress-bar() {
 		statusBar+=$rhs
 	done
 	statusBar+="]"
-
-	echo -ne "$statusBar $current/$total ($percentDone%)\r"
+	
+	echo -ne "\r$statusBar $current/$total ($percentDone%)"
+		
 }
 
 # run main script
 # check if help requested
-case $1 in
-	-h | --help)
-		helper
-		exit 0
-esac
+if [[ "$1" == "-h" || "$1" == "--help" ]]; then
+	helper
+	exit 0
+fi
 # check minimum number of inputs
 if [[ $# -lt 2 ]]; then
-	echo "ERROR: current and total values expected as input"
+	echo "ERROR: current and total values expected as input" >&2
 	exit 1
 fi
 # execute progress-bar
