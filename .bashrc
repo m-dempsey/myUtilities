@@ -4,6 +4,7 @@ alias cp='cp -r'
 alias chext='changeextension'
 alias ut='unzipTrajectory'
 alias reload='. ~/.bashrc'
+alias npp="Notepad++"
 
 # load local path shortcuts
 . ~/.localpaths
