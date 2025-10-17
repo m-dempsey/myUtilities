@@ -43,6 +43,7 @@ def progressbar(
 if __name__ == "__main__":
         
     parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description="Utility to make a progress bar",
         epilog=f"Example: python {sys.argv[0]} 69 420 --width 40 --lhs "">"" --head ""|"" --rhs ""<"""
     )
@@ -60,25 +61,25 @@ if __name__ == "__main__":
         "--width",
         type=int,
         default=50,
-        help=f"[default=50] Total number of columns for the bar to take up"
+        help=f"Total number of columns for the bar to take up"
     )
     parser.add_argument(
         "--lhs",
         type=str,
         default=">",
-        help=f"[default=>] Left hand symbol in the progress bar"
+        help=f"Left hand symbol in the progress bar"
     )
     parser.add_argument(
         "--head",
         type=str,
         default="|",
-        help=f"[default=|] Symbol for the current status in the progress bar"
+        help=f"Symbol for the current status in the progress bar"
     )
     parser.add_argument(
         "--rhs",
         type=str,
         default="<",
-        help=f"[default=<] Right hand symbol in the progress bar"
+        help=f"Right hand symbol in the progress bar"
     )
 
     args = parser.parse_args()
