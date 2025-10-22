@@ -5,6 +5,8 @@
 # Decrtiption: change the extension of all files in a directory
 
 scriptName=$(basename "$0")
+verboseFlag=0;
+methodFlag="mv"
 
 function helper() {
     version
@@ -20,6 +22,7 @@ function helper() {
     echo "  -h, --help              Display this help message"
     echo "  -v, --version           Display script version"
     echo "  -V, --verbose           Display verbose output"
+    echo "  -m, --method            Change method, mv (default) renames the file extension or cp creates a copy"
 }
 
 function version() {
@@ -37,7 +40,19 @@ function mainChangeExtension() {
         if [[ $verboseFlag -eq 1 ]]; then
             echo "Renaming $file to $newFile"
         fi
-        mv "$file" "$newFile"
+
+        case "$methodFlag" in 
+            "mv")
+                mv "$file" "$newFile"
+                ;;
+            "cp")
+                cp "$file" "$newFile"
+                ;;
+            *)
+                echo "invalid method \"$methodFlag\"... must be \"mv\" or \"cp\""
+                exit 1
+                ;;
+        esac
     done
 
     echo "Done changing extensions from $oldExt to $newExt."
@@ -83,6 +98,11 @@ while [[ $# -gt -1 ]]; do
         -V | --verbose)
             verboseFlag=1
             shift # past argument
+            ;;
+        -m | --method)
+            methodFlag="$2"
+            shift
+            shift
             ;;
         *)
             checkArguments "$@"
