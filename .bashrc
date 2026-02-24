@@ -9,6 +9,9 @@ alias npp="Notepad++"
 # load local path shortcuts
 . ~/.localpaths
 
+# set shell prompt
+PS1='\[\033]0;$TITLEPREFIX:$PWD\007\]\n\[\033[32m\]\u@\h \[\033[33m\]\w\[\033[36m\]`__git_ps1`\[\033[0m\]\n$ '
+
 # git shortcuts
 alias git-clean-remote='git fetch --prune origin'
 alias git-clean-local='git branch -d $(git branch --merged=main | grep -v main); git fetch --prune'
